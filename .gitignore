@@ -211,3 +211,6 @@ web_modules
 
 # Add local database
 data
+
+# Add unecessary directories
+/frontend/src/component/tutorial/
