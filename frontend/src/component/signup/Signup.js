@@ -1,6 +1,12 @@
 import React, {Component} from 'react';
 import {Button, Col, Container, Form, FormControl, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
+import signupAction from "../../redux/signup/signupAction";
+import {connect} from "react-redux";
+import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types"; // new import
+
+
 
 
 class Signup extends Component{
@@ -18,7 +24,11 @@ class Signup extends Component{
 
     onSignupClick = e => {
         e.preventDefault();
-        console.log(this.state.username + " " + this.state.password)
+        const userInput = {
+            username: this.state.username,
+            password: this.state.password
+        }
+        this.props.signupAction(userInput);
     }
 
     render() {
@@ -35,19 +45,23 @@ class Signup extends Component{
                                     name="username"
                                     placeholder="Enter user name"
                                     value={this.state.username}
-                                    onChange={this.onChange}/>
+                                    onChange={this.onChange}
+                                    isInvalid={this.props.signupUser.usernameError[0]}
+                                />
                                 <FormControl.Feedback type="invalid"/>
+                                {this.props.signupUser.usernameError[0]}
                             </Form.Group>
-                            <Form.Group controlId="passwordId">
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control
-                                    type="password"
-                                    name="password"
-                                    placeholder="Enter user password"
-                                    value={this.state.password}
-                                    onChange={this.onChange}/>
-                                <FormControl.Feedback type="invalid"/>
-                            </Form.Group>
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control
+                                type="password"
+                                name="password"
+                                placeholder="Enter user password"
+                                value={this.state.password}
+                                onChange={this.onChange}
+                                isInvalid={this.props.signupUser.passwordError[0]}
+                            />
+                            <FormControl.Feedback type="invalid"/>
+                            {this.props.signupUser.passwordError[0]}
                         </Form>
                         <Button
                             color="primary"
@@ -62,4 +76,15 @@ class Signup extends Component{
     }
 }
 
-export default Signup;
+Signup.propTypes = {
+  signupAction: PropTypes.func.isRequired,
+  signupUser: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  signupUser: state.signupUser
+});
+
+export default connect(mapStateToProps, {
+  signupAction
+})(withRouter(Signup));

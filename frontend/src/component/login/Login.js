@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
 import {Button, Col, Container, Form, FormControl, Row} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
+import loginUserAction from "../../redux/login/loginAction";
+import {connect} from "react-redux";
+import {DASHBOARD_URL} from "../../utils/Constant";
+import PropTypes from "prop-types";
 
 class Login extends Component {
     constructor(props) {
@@ -18,7 +22,12 @@ class Login extends Component {
 
     onLoginClick = e =>{
         e.preventDefault();
-        console.log(this.state.username + " " + this.state.password)
+        const userInput = {
+            username: this.state.username,
+            password: this.state.password
+        }
+
+        this.props.loginUserAction(userInput, DASHBOARD_URL)
     }
     render() {
         return (
@@ -34,9 +43,10 @@ class Login extends Component {
                                     name="username"
                                     placeholder="Enter user name"
                                     value={this.state.username}
-                                    required="true"
-                                    onChange={this.onChange}/>
+                                    onChange={this.onChange}
+                                    isInvalid={this.props.loginUser.usernameError[0]}/>
                                 <FormControl.Feedback type="invalid"/>
+                                {this.props.loginUser.usernameError[0]}
                             </Form.Group>
                             <Form.Group controlId="passwordId">
                                 <Form.Label>Password</Form.Label>
@@ -45,9 +55,12 @@ class Login extends Component {
                                     name="password"
                                     placeholder="Enter user password"
                                     value={this.state.password}
-                                    onChange={this.onChange}/>
+                                    onChange={this.onChange}
+                                    isInvalid={this.props.loginUser.passwordError[0]}/>
                                 <FormControl.Feedback type="invalid"/>
                             </Form.Group>
+                            <FormControl.Feedback type="invalid"/>
+                            {this.props.loginUser.passwordError[0]}
                         </Form>
                         <Button
                             color="primary"
@@ -62,4 +75,15 @@ class Login extends Component {
     }
 }
 
-export default Login;
+Login.propTypes = {
+  loginUserAction: PropTypes.func.isRequired,
+  loginUser: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => {
+    return {
+        loginUser: state.loginUser
+    }
+}
+
+export default connect(mapStateToProps, {loginUserAction}) (withRouter(Login));
