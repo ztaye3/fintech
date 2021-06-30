@@ -1,4 +1,5 @@
 import  {SET_TOKEN, SET_CURRENT_USER, UNSET_CURRENT_USER} from "./loginType";
+import {isEmptyUtils} from "../../utils/Utils";
 
 const initialState = {
     user: {},
@@ -23,13 +24,18 @@ const loginReducer = (state = initialState, action) => {
             }
         case UNSET_CURRENT_USER:
 
-            if (action.errorData.hasOwnProperty("username")){
+            // Check if the action is is 'loginAction'
+           if(!isEmptyUtils(action.errorData)){
+
+                if (action.errorData.hasOwnProperty("username")){
                 state.usernameError = action.errorData["username"]
             }
 
              if (action.errorData.hasOwnProperty("password")){
                 state.passwordError = action.errorData["password"]
             }
+
+           }
              return {
                  ...state,
                  usernameError: state.usernameError,

@@ -7,3 +7,4 @@ export const LOGIN_URL = "/api/v1/token/login";
 export const GET_USER_URL = "/api/v1/users/me/";
 export const SIGNUP_URL = "/api/v1/users/";
 export const LOGOUT_URL = "/api/v1/token/logout/";
+export const AUTH_LOGIN_REDIRECT_URL = "/login/?next=";

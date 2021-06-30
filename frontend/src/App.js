@@ -7,6 +7,7 @@ import Login from "./component/login/Login";
 import Root from "./redux/Root";
 import { ToastContainer } from "react-toastify";
 import axios from "axios";
+import authentication from "./utils/Authentication";
 axios.defaults.baseURL = "http://127.0.0.1:8000";
 
 
@@ -21,7 +22,7 @@ class App extends Component {
                 <Switch>
                     <Route exact path="/" component={Home}/>
                     <Route exact path="/signup" component={Signup}/>
-                    <Route exact path="/dashboard" component={Dashboard}/>
+                    <Route exact path="/dashboard" component={authentication(Dashboard)}/>
                     <Route exact path="/login" component={Login}/>
                 </Switch>
             </Root>
