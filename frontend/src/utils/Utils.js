@@ -35,3 +35,12 @@ export const isEmptyUtils = value =>
   value === null ||
   (typeof value === "object" && Object.keys(value).length === 0) ||
   (typeof value === "string" && value.trim().length === 0);
+
+
+export const unsetLocalStorage = () =>{
+
+            // Unset local storages
+            setAxiosTokenAuthHeader("");
+            localStorage.removeItem("token");
+            localStorage.removeItem("user")
+}

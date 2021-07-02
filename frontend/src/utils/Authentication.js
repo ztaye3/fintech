@@ -42,6 +42,7 @@ export default function authentication(CurrentComponent){
 
 AuthenticatedComponent.propTypes = {
     isAuthenticated: PropTypes.bool.isRequired,
+    // location is a 'router' store
     location: PropTypes.shape({
       pathname: PropTypes.string.isRequired
     }).isRequired,

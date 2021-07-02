@@ -1,7 +1,7 @@
 import {toast} from "react-toastify";
 import axios from "axios"
 import {SET_CURRENT_USER, SET_TOKEN, UNSET_CURRENT_USER} from "./loginType";
-import {setAxiosTokenAuthHeader, errorFilter, isEmptyUtils} from "../../utils/Utils";
+import {setAxiosTokenAuthHeader, errorFilter, isEmptyUtils, unsetLocalStorage} from "../../utils/Utils";
 import { push } from "connected-react-router";
 import {BASE_URL, GET_USER_URL, LOGIN_URL} from "../../utils/Constant";
 
@@ -62,6 +62,7 @@ export const setToken = auth_token =>{
 export const getCurrentUser = (redirect) => {
 
     return function (dispatch){
+
         axios
             .get(BASE_URL + GET_USER_URL)
             .then(response => {
@@ -105,15 +106,14 @@ export const setCurrentUser = (user, redirect) => {
 // Current user un setter
 const unsetCurrentUser = error =>{
     return function(dispatch){
+
+        unsetLocalStorage();
+
         dispatch({
                     type: UNSET_CURRENT_USER,
                     info: 'Error in login',
                     errorData: error.response.data
                 })
-
-                // Unset local storages
-                setAxiosTokenAuthHeader("");
-                localStorage.removeItem("token");
 
                 // Propagate error
                 errorFilter(error)

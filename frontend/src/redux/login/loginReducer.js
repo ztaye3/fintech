@@ -36,12 +36,8 @@ const loginReducer = (state = initialState, action) => {
             }
 
            }
-             return {
-                 ...state,
-                 usernameError: state.usernameError,
-                 passwordError: state.passwordError,
-                 isAuthenticated: false
-            }
+             return initialState;
+
         default:
             return state;
     }

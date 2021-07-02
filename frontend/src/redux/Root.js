@@ -8,6 +8,8 @@ import { routerMiddleware, ConnectedRouter } from "connected-react-router";
 import rootReducer from "./reducer";
 import {isEmptyUtils} from "../utils/Utils";
 import {setCurrentUser, setToken} from "./login/loginAction";
+import { composeWithDevTools } from 'redux-devtools-extension';
+
 
 
 export const history = createBrowserHistory();
@@ -16,11 +18,12 @@ export const history = createBrowserHistory();
 const Root = ({ children, initialState = {} }) => {
   const middleware = [thunk, routerMiddleware(history)];
 
-  // Create state
+  // Create state: with react-redux dev tool
   const store = createStore(
     rootReducer(history),
     initialState,
-    applyMiddleware(...middleware)
+    composeWithDevTools(
+    applyMiddleware(...middleware))
   );
 
 // Check local storage for login credentials; it will avoid unnecessary login checking
