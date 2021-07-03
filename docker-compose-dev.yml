@@ -1,6 +1,7 @@
-version: "3.3"
+version: '2'
 
 services:
+
     db:
         image: postgres
         restart: always #Prevent postgres from stopping the container
@@ -20,30 +21,21 @@ services:
             dockerfile: ./docker/nginx/Dockerfile
         ports:
             - 80:80
-            - 443:443
         volumes:
             - static_volume:/code/backend/server/django_static
-            - ./docker/nginx/production:/etc/nginx/conf.d
-            - ./docker/nginx/certbot/conf:/etc/letsencrypt
-            - ./docker/nginx/certbot/www:/var/www/certbot
+            - ./docker/nginx/development:/etc/nginx/conf.d
         depends_on:
             - backend
-
-    # Volume for certificate renewal
-    certbot:
-        image: certbot/certbot
-        restart: unless-stopped
-        volumes:
-            - ./docker/nginx/certbot/conf:/etc/letsencrypt
-            - ./docker/nginx/certbot/www:/var/www/certbot
-        entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
     backend:
         restart: unless-stopped
         build:
             context: .
             dockerfile: ./docker/backend/Dockerfile
+        volumes:
+
         entrypoint: /code/docker/backend/wsgi-entrypoint.sh
         volumes:
+            - .:/code
             - static_volume:/code/backend/server/django_static
         expose:
             - 8000
@@ -53,3 +45,4 @@ services:
 volumes:
     static_volume: { }
     pgdata: { }
+

@@ -2,7 +2,7 @@ import {CREATE_USER_SUBMIT, CREATE_USER_SUCCESS, CREATE_USER_ERROR} from "./sign
 import axios from "axios";
 import {toast} from "react-toastify";
 import {logger} from "redux-logger/src";
-import {BASE_URL, SIGNUP_URL} from "../../utils/Constant";
+import {SIGNUP_URL} from "../../utils/Constant";
 import {errorFilter} from "../../utils/Utils";
 
 export const signupAction = userInput => {
@@ -14,7 +14,7 @@ export const signupAction = userInput => {
 
       // Initiate signup request to backend server
       axios
-          .post(BASE_URL + SIGNUP_URL, userInput)
+          .post(SIGNUP_URL, userInput)
           .then(response => {
               // Display in success toast
               toast.success(

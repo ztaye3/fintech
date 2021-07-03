@@ -3,7 +3,7 @@ import axios from "axios"
 import {SET_CURRENT_USER, SET_TOKEN, UNSET_CURRENT_USER} from "./loginType";
 import {setAxiosTokenAuthHeader, errorFilter, isEmptyUtils, unsetLocalStorage} from "../../utils/Utils";
 import { push } from "connected-react-router";
-import {BASE_URL, GET_USER_URL, LOGIN_URL} from "../../utils/Constant";
+import {GET_USER_URL, LOGIN_URL} from "../../utils/Constant";
 
 
 
@@ -11,7 +11,7 @@ import {BASE_URL, GET_USER_URL, LOGIN_URL} from "../../utils/Constant";
 export const loginUserAction = (userInput, redirectTo) =>{
     return function (dispatch){
         axios
-            .post(BASE_URL + LOGIN_URL, userInput)
+            .post(LOGIN_URL, userInput)
             .then(response => {
                 // Display in success toast
               toast.success(
@@ -64,7 +64,7 @@ export const getCurrentUser = (redirect) => {
     return function (dispatch){
 
         axios
-            .get(BASE_URL + GET_USER_URL)
+            .get(GET_USER_URL)
             .then(response => {
 
                 // Format response

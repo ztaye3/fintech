@@ -1,28 +1,21 @@
 #!/bin/sh
 
-until cd /equb/backend/server
+# Wait till server is ready
+until cd /code/backend/server
 do
     echo "Waiting for server volume..."
 done
 
+# Wait till DB is ready
 until ./manage.py migrate
 do
     echo "Waiting for db to be ready..."
     sleep 2
 done
 
+# Run DB migration and collect static files
 ./manage.py collectstatic --noinput
 
-gunicorn server.wsgi --bind 0.0.0.0:8000 --workers 4 --threads 4
+# Run gunicorn server with 4 workers and threads (16 concurrent request)
+gunicorn server.wsgi --bind 0.0.0.0:8000 --workers 4 --threads 4 --log-level debug
 
-#####################################################################################
-# Options to DEBUG Django server
-# Optional commands to replace above gunicorn command
-
-# Option 1:
-# run gunicorn with debug log level
-# gunicorn server.wsgi --bind 0.0.0.0:8000 --workers 1 --threads 1 --log-level debug
-
-# Option 2:
-# run development server
-# DEBUG=True ./manage.py runserver 0.0.0.0:8000

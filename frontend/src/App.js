@@ -8,9 +8,14 @@ import Root from "./redux/Root";
 import { ToastContainer } from "react-toastify";
 import axios from "axios";
 import authentication from "./utils/Authentication";
-axios.defaults.baseURL = "http://127.0.0.1:8000";
+import {BASE_BACKEND_URL, BASE_FRONTEND_URL} from "./utils/Constant";
 
-
+/* Check if server is running in development or production*/
+if (window.location.origin === BASE_FRONTEND_URL) {
+  axios.defaults.baseURL = BASE_BACKEND_URL; // Development
+} else {
+  axios.defaults.baseURL = window.location.origin; // Production
+}
 
 class App extends Component {
   render() {

@@ -3,14 +3,14 @@ import {UNSET_CURRENT_USER} from "../login/loginType";
 import { push } from "connected-react-router";
 import {toast} from "react-toastify";
 import {errorFilter, setAxiosTokenAuthHeader, unsetLocalStorage} from "../../utils/Utils";
-import {BASE_URL, LOGOUT_URL} from "../../utils/Constant";
+import {LOGOUT_URL} from "../../utils/Constant";
 
 
 // Logout action
 const logoutAction = () => {
     return function (dispatch){
         axios
-            .post(BASE_URL + LOGOUT_URL)
+            .post(LOGOUT_URL)
             .then(response => {
 
                 unsetLocalStorage();

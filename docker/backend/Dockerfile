@@ -1,15 +1,18 @@
 # docker/backend/Dockerfile
 
-# Lightweight linux alpine distribution for fast build
-FROM python:3.8.3-alpine
+# Lightweight linux  distribution for fast build
+FROM python:3.6
+ENV PYTHONUNBUFFERED=1
 
-WORKDIR /equb
-ADD ./backend/requirements.txt /equb/backend/
+# Create code directory and copy req. deocument
+WORKDIR /code
+ADD ./backend/requirements.txt /code/backend/
 
-
+# Install necessary packages
 RUN pip install --upgrade pip
 RUN pip install gunicorn
 RUN pip install -r backend/requirements.txt
 
-ADD ./docker /equb/docker
-ADD ./backend /equb/backend
+# Copy backend source code at the end of build for increasing performance
+ADD ./docker /code/docker
+ADD ./backend /code/backend

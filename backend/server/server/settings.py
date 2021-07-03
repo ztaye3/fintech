@@ -22,9 +22,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-)c7pc6#e7h&#po@b&m3adqp!w%(qw^2st=m-uvr_xt3i31*^r^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0', 'factteller.zekariashirpo.com', 'www.factteller.zekariashirpo.com']
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
@@ -32,7 +32,6 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -143,7 +142,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/django_static/'
+# Directory where static files from Django application will be stored after 'collectstatic' command
+STATIC_ROOT = BASE_DIR / 'django_static'
+MEDIA_URL = '/media/'  # Url for serving files uploaded to Django application
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
