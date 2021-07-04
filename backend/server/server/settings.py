@@ -71,10 +71,20 @@ REST_FRAMEWORK = {
 
 # Djoser Configuration
 DJOSER = {
-    "USER_ID_FIELD": "username"
+    "USER_ID_FIELD": "username",
+    "LOGIN_FIELD": "email",
+    "SEND_ACTIVATION_EMAIL": True,
+    "ACTIVATION_URL": "activate/{uid}/{token}",
+    # Allow user to login with unverified email#
+    'SERIALIZERS': {
+        'token_create': 'identity.serializers.CustomTokenCreateSerializer',
+    },
 }
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+SITE_NAME = "FactTeller"
 
 ROOT_URLCONF = 'server.urls'
+
 
 TEMPLATES = [
     {
