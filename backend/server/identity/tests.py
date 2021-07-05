@@ -21,7 +21,7 @@ class EmailVerificationTest(APITestCase):
         "password": 'password'
     }
 
-    def test_register_with_email_verificatio(self):
+    def test_register_with_email_verification(self):
         # Send signup request
         response = self.client.post(const.SIGNUP_USER_URL, self.signup_data, format="json")
 

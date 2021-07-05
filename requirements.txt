@@ -8,3 +8,5 @@ pyparsing==2.2.0
 pytz==2017.2
 six==1.10.0
 appdirs==1.4.3
+djangorestframework-simplejwt==4.4.0
+PyJWT==1.7.1

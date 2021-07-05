@@ -4,6 +4,7 @@ import {toast} from "react-toastify";
 import {logger} from "redux-logger/src";
 import {SIGNUP_URL} from "../../utils/Constant";
 import {errorFilter} from "../../utils/Utils";
+import {push} from "connected-react-router";
 
 export const signupAction = userInput => {
   return function(dispatch){
@@ -26,6 +27,9 @@ export const signupAction = userInput => {
                   type: CREATE_USER_SUCCESS,
                   info: "User create successfully"
               })
+
+              dispatch(push("/signup"))
+
           })
 
           //If error

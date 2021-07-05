@@ -3,7 +3,8 @@ import {CREATE_USER_SUBMIT, CREATE_USER_SUCCESS, CREATE_USER_ERROR} from "./sign
 const initialState = {
     usernameError: "",
     passwordError: "",
-    isSummited: false
+    isSubmitted: false,
+    emailError: ""
 }
 
 // Signup reducer
@@ -14,7 +15,8 @@ const signupReducer = (state = initialState, action) =>{
 
                 usernameError: "",
                 passwordError: "",
-                isSubmitted: true
+                isSubmitted: true,
+                emailError: ""
             }
         case CREATE_USER_ERROR:
 
@@ -25,10 +27,15 @@ const signupReducer = (state = initialState, action) =>{
              if (action.errorData.hasOwnProperty("password")){
                 state.passwordError = action.errorData["password"]
             }
+
+             if (action.errorData.hasOwnProperty("email")){
+                state.emailError = action.errorData["email"]
+            }
              return {
                  ...state,
                  usernameError: state.usernameError,
                  passwordError: state.passwordError,
+                 emailError: state.emailError,
                  isSubmitted: false
             }
 
@@ -37,6 +44,7 @@ const signupReducer = (state = initialState, action) =>{
                 ...state,
                 usernameError: "",
                 passwordError: "",
+                emailError: "",
                 isSubmitted: true
             }
         default:

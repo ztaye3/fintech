@@ -28,8 +28,8 @@ const Root = ({ children, initialState = {} }) => {
 
 // Check local storage for login credentials; it will avoid unnecessary login checking
   // Check token
-  if (!isEmptyUtils(localStorage.getItem("token"))) {
-    store.dispatch(setToken(localStorage.getItem("token")));
+  if (!isEmptyUtils(localStorage.getItem("access"))) {
+    store.dispatch(setToken(localStorage.getItem("access")));
   }
 
   // Check user

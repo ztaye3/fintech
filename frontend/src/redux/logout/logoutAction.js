@@ -7,33 +7,20 @@ import {LOGOUT_URL} from "../../utils/Constant";
 
 
 // Logout action
-const logoutAction = () => {
-    return function (dispatch){
-        axios
-            .post(LOGOUT_URL)
-            .then(response => {
+const logoutAction = () => dispatch => {
 
-                unsetLocalStorage();
+        unsetLocalStorage();
 
-                dispatch({
-                    type: UNSET_CURRENT_USER,
-                    info: 'Logout user'
-                })
+        dispatch({
+            type: UNSET_CURRENT_USER
+        })
 
-                // Redirect to home
-                dispatch(push("/"));
+        // Redirect to home
+        dispatch(push("/"));
 
-                // Display Notification
-                toast.success("Logout successful.");
-            })
-            .catch(error => {
-                dispatch({
-                    type: UNSET_CURRENT_USER,
-                    info: 'Logout user'
-                })
-                errorFilter(error);
-            })
-    }
+        // Display Notification
+        toast.success("Logout successful.");
+
 }
 
 export default logoutAction;

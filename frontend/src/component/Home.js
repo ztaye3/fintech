@@ -6,16 +6,20 @@ export class MyComponent extends Component {
     render() {
         return (
             <Container>
-                <h1>Home</h1>
-                <p>
-                    <Link to="/login">Login</Link>
-                </p>
-                <p>
-                    <Link to="/signup">Signup</Link>
-                </p>
-                <p>
-                    <Link to="/dashboard">Dashboard</Link>
-                </p>
+                <div className='container'>
+                    <div className='jumbotron mt-5'>
+                        <h1 class='display-4'>Home</h1>
+                        <p>
+                            <Link class='btn btn-primary btn-sm' to="/login">Login</Link>
+                        </p>
+                        <p>
+                            <Link class='btn btn-primary btn-sm' to="/signup">Signup</Link>
+                        </p>
+                        <p>
+                            <Link class='btn btn-primary btn-sm' to="/dashboard">Dashboard</Link>
+                        </p>
+                    </div>
+                </div>
             </Container>
         );
     }

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Col, Container, Form, FormControl, Row} from "react-bootstrap";
-import {Link, withRouter} from "react-router-dom";
+import {Link, withRouter, Redirect} from "react-router-dom";
 import loginUserAction from "../../redux/login/loginAction";
 import {connect} from "react-redux";
 import {DASHBOARD_URL} from "../../utils/Constant";
@@ -10,7 +10,7 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username:"",
+            email:"",
             password:""}
     }
 
@@ -23,30 +23,34 @@ class Login extends Component {
     onLoginClick = e =>{
         e.preventDefault();
         const userInput = {
-            username: this.state.username,
+            email: this.state.email,
             password: this.state.password
         }
 
         this.props.loginUserAction(userInput, DASHBOARD_URL)
     }
     render() {
+        if (this.props.loginUser.isAuthenticated) {
+        return <Redirect to='/dashboard' />
+            }
         return (
             <Container>
-                <Row>
+                <div className='container mt-5'>
+                    <Row>
                     <Col md="4">
                         <h1>Login</h1>
                         <Form >
                             <Form.Group ControlId="usernameId">
-                                <Form.Label>User name</Form.Label>
+                                <Form.Label>Email</Form.Label>
                                 <Form.Control
-                                    type="text"
-                                    name="username"
-                                    placeholder="Enter user name"
-                                    value={this.state.username}
+                                    type="email"
+                                    name="email"
+                                    placeholder="Enter email"
+                                    value={this.state.email}
                                     onChange={this.onChange}
-                                    isInvalid={this.props.loginUser.usernameError[0]}/>
+                                    isInvalid={this.props.loginUser.emailError[0]}/>
                                 <FormControl.Feedback type="invalid"/>
-                                {this.props.loginUser.usernameError[0]}
+                                {this.props.loginUser.emailError[0]}
                             </Form.Group>
                             <Form.Group controlId="passwordId">
                                 <Form.Label>Password</Form.Label>
@@ -56,20 +60,29 @@ class Login extends Component {
                                     placeholder="Enter user password"
                                     value={this.state.password}
                                     onChange={this.onChange}
+                                     minLength='6'
                                     isInvalid={this.props.loginUser.passwordError[0]}/>
                                 <FormControl.Feedback type="invalid"/>
                             </Form.Group>
                             <FormControl.Feedback type="invalid"/>
                             {this.props.loginUser.passwordError[0]}
                         </Form>
-                        <Button
-                            color="primary"
+
+                        <br/>
+                            <Button
+                            className='btn btn-primary'
                             onClick={this.onLoginClick}>Sign Up</Button>
-                        <p className="mt-2">
+
+                        <p className="mt-3">
                             Don't have an account ? <Link to="/signup">Signup</Link>
                         </p>
+                        <p className='mt-3'>
+                            Forgot your Password? <Link to='/reset-password'>Reset Password</Link>
+                        </p>
                     </Col>
-                </Row>
+                    </Row>
+                </div>
+
             </Container>
         );
     }

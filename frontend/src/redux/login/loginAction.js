@@ -1,9 +1,24 @@
 import {toast} from "react-toastify";
 import axios from "axios"
-import {SET_CURRENT_USER, SET_TOKEN, UNSET_CURRENT_USER} from "./loginType";
+import {
+    REFRESH_TOKEN_FAIL,
+    REFRESH_TOKEN_SUCCESS, RESET_PASSWORD_FAIL, RESET_PASSWORD_SUCCESS,
+    SET_CURRENT_USER,
+    SET_TOKEN,
+    UNSET_CURRENT_USER,
+    VERIFY_TOKEN_FAIL,
+    VERIFY_TOKEN_SUCCESS
+} from "./loginType";
 import {setAxiosTokenAuthHeader, errorFilter, isEmptyUtils, unsetLocalStorage} from "../../utils/Utils";
 import { push } from "connected-react-router";
-import {GET_USER_URL, LOGIN_URL} from "../../utils/Constant";
+import {
+    GET_USER_URL,
+    LOGIN_URL,
+    REFRESH_TOKEN_URL,
+    RESET_PASSWORD_CONFIRM_URL,
+    RESET_PASSWORD_URL,
+    VERIFY_TOKEN_URL
+} from "../../utils/Constant";
 
 
 
@@ -13,19 +28,18 @@ export const loginUserAction = (userInput, redirectTo) =>{
         axios
             .post(LOGIN_URL, userInput)
             .then(response => {
-                // Display in success toast
-              toast.success(
-                  "User " + userInput.username+
-                  " logged in successfully!"
-              )
 
-                const {auth_token} = response.data;
+                const {access, refresh} = response.data;
 
                 // Set token header
-                setAxiosTokenAuthHeader(auth_token)
+                setAxiosTokenAuthHeader(access)
 
                 // Set token
-                dispatch(setToken(auth_token))
+                dispatch(setToken(access, refresh))
+
+
+                // Verify token
+                dispatch(verifyToken(access))
 
                 // Get user details
                 dispatch(getCurrentUser(redirectTo))
@@ -40,20 +54,19 @@ export const loginUserAction = (userInput, redirectTo) =>{
 }
 
 // Token setter
-export const setToken = auth_token =>{
+export const setToken = (access, refresh) =>{
     return function(dispatch){
 
                 // Save token for re use during refresh
-                localStorage.setItem("token", auth_token);
-
-                // Set token header
-                setAxiosTokenAuthHeader(auth_token)
+                localStorage.setItem("access", access);
+                localStorage.setItem("refresh", refresh);
 
                 // Call set_token action, pass token
                 dispatch({
                    type: SET_TOKEN,
                    info: 'Token received',
-                   payload: auth_token
+                   access: access,
+                    refresh: refresh
                  })
     }
 }
@@ -68,10 +81,12 @@ export const getCurrentUser = (redirect) => {
             .then(response => {
 
                 // Format response
-                const {email, username} = response.data
+                const {email, username, first_name, last_name} = response.data
                 const user = {
                         username: username,
-                        email: email
+                        email: email,
+                        first_name: first_name,
+                        last_name: last_name
                     };
 
                 // Set current user
@@ -95,6 +110,14 @@ export const setCurrentUser = (user, redirect) => {
                     info: 'Current user sated',
                     payload: user
                 })
+
+                if(!isEmptyUtils(user)){
+                  // Display in success toast
+                  toast.success(
+                      "User " + user.first_name + " " + user.last_name +
+                      " logged in successfully!"
+                  )
+              }
 
                 // Redirect to dashboard page
                 if (!isEmptyUtils(redirect)) {
@@ -120,6 +143,79 @@ const unsetCurrentUser = error =>{
     }
 
 
+}
+
+// Verify token/access
+export const verifyToken = (access) => dispatch => {
+
+    const auth_token = {token: access};
+
+    axios.post(VERIFY_TOKEN_URL, auth_token)
+        .then(response => {
+            dispatch({
+                type: VERIFY_TOKEN_SUCCESS,
+                info: "Verify token success"
+            })
+        })
+        .catch(error => {
+            dispatch({
+                type: VERIFY_TOKEN_FAIL
+            })
+        })
+}
+
+// Refresh token/access
+export const refreshToken = (refresh_token) => dispatch => {
+    axios.post(REFRESH_TOKEN_URL, refresh_token)
+        .then(response => {
+            dispatch({
+                type: REFRESH_TOKEN_SUCCESS,
+                info: "Verify token success"
+            })
+        })
+        .catch(error => {
+            dispatch({
+                type: REFRESH_TOKEN_FAIL
+            })
+        })
+}
+
+// Reset Password
+export const resetPassword = (email) => dispatch => {
+
+    const email_address = {email: email};
+
+    axios.post(RESET_PASSWORD_URL, email_address)
+        .then(response => {
+            dispatch({
+                type: RESET_PASSWORD_SUCCESS,
+                info: "Reset password success"
+            })
+
+        })
+        .catch(error => {
+            dispatch({
+                type: RESET_PASSWORD_FAIL
+            })
+        })
+}
+
+// Reset Password Confirm
+export const resetPasswordConfirm = (userInput) => dispatch => {
+    axios.post(RESET_PASSWORD_CONFIRM_URL, userInput)
+        .then(response => {
+            dispatch({
+                type: RESET_PASSWORD_SUCCESS,
+                info: "Reset password success"
+            })
+
+            dispatch(push("/login"))
+        })
+        .catch(error => {
+            dispatch({
+                type: RESET_PASSWORD_FAIL
+            })
+        })
 }
 
 export default loginUserAction;

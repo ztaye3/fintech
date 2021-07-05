@@ -1,12 +1,26 @@
-import  {SET_TOKEN, SET_CURRENT_USER, UNSET_CURRENT_USER} from "./loginType";
+import {
+    SET_TOKEN,
+    SET_CURRENT_USER,
+    UNSET_CURRENT_USER,
+    REFRESH_TOKEN_SUCCESS,
+    REFRESH_TOKEN_FAIL,
+    VERIFY_TOKEN_SUCCESS,
+    VERIFY_TOKEN_FAIL,
+    RESET_PASSWORD_SUCCESS,
+    RESET_PASSWORD_FAIL,
+    RESET_PASSWORD_CONFIRM_SUCCESS,
+    RESET_PASSWORD_CONFIRM_FAIL
+} from "./loginType";
 import {isEmptyUtils} from "../../utils/Utils";
 
 const initialState = {
     user: {},
-    token: "",
+    access: "",
+    refresh: "",
     isAuthenticated: false,
-    usernameError: "",
+    emailError: "",
     passwordError: "",
+    isResetPasswordRequestSent: false
 }
 
 const loginReducer = (state = initialState, action) => {
@@ -15,20 +29,40 @@ const loginReducer = (state = initialState, action) => {
             return  {
                 ...state,
                 isAuthenticated: true,
-                token: action.payload
+                access: action.access,
+                refresh: action.refresh
             }
         case SET_CURRENT_USER:
             return {
                 ...state,
-                user: action.payload
+                user: action.payload,
+            }
+        case REFRESH_TOKEN_SUCCESS:
+            return {
+                 ...state,
+                isAuthenticated: true,
+                access: action.access,
+            }
+        case REFRESH_TOKEN_FAIL:
+            return {
+                ...state
+            }
+          case VERIFY_TOKEN_SUCCESS:
+            return {
+                 ...state,
+                isAuthenticated: true,
+            }
+        case VERIFY_TOKEN_FAIL:
+            return {
+                 initialState
             }
         case UNSET_CURRENT_USER:
 
             // Check if the action is is 'loginAction'
            if(!isEmptyUtils(action.errorData)){
 
-                if (action.errorData.hasOwnProperty("username")){
-                state.usernameError = action.errorData["username"]
+                if (action.errorData.hasOwnProperty("email")){
+                state.emailError = action.errorData["email"]
             }
 
              if (action.errorData.hasOwnProperty("password")){
@@ -37,6 +71,16 @@ const loginReducer = (state = initialState, action) => {
 
            }
              return initialState;
+
+        case RESET_PASSWORD_SUCCESS:
+            return {
+                ...state,
+                isResetPasswordRequestSent: true
+            }
+        case RESET_PASSWORD_FAIL:
+        case RESET_PASSWORD_CONFIRM_SUCCESS:
+            return initialState;
+        case RESET_PASSWORD_CONFIRM_FAIL:
 
         default:
             return state;

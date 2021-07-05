@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {Container, Navbar, Nav} from "react-bootstrap";
 import PropTypes from "prop-types";
-import {withRouter} from "react-router-dom";
+import {withRouter, Link, Redirect} from "react-router-dom";
 import {connect} from "react-redux";
 import logoutAction from "../../redux/logout/logoutAction";
 
@@ -19,7 +19,7 @@ class Dashboard extends Component {
 
         return (
            <div>
-                <Navbar bg="light">
+                <Navbar className='navbar navbar-expand-lg navbar-light bg-light'>
                   <Navbar.Brand href="/">Home</Navbar.Brand>
                   <Navbar.Toggle />
                   <Navbar.Collapse className="justify-content-end">
@@ -29,8 +29,9 @@ class Dashboard extends Component {
                     <Nav.Link onClick={this.onLogoutClick}>Logout</Nav.Link>
                   </Navbar.Collapse>
                 </Navbar>
+
         <Container>
-          <h1>Dashboard</h1>
+          <h1 className="container">Welcome to Fact Teller</h1>
         </Container>
       </div>
         );

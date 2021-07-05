@@ -8,7 +8,7 @@ export const setAxiosTokenAuthHeader = (auth_token) => {
     // Check if token is not empty
     if(auth_token && typeof auth_token != 'undefined'){
         // Append token on every axios request header
-        axios.defaults.headers.common[AUTHORIZATION] = "Token " + auth_token;
+        axios.defaults.headers.common[AUTHORIZATION] = "JWT " + auth_token;
     }
     else {
         // Remove token auth header
@@ -41,6 +41,7 @@ export const unsetLocalStorage = () =>{
 
             // Unset local storages
             setAxiosTokenAuthHeader("");
-            localStorage.removeItem("token");
-            localStorage.removeItem("user")
+            localStorage.removeItem("access");
+            localStorage.removeItem("refresh");
+            localStorage.removeItem("user");
 }

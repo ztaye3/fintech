@@ -52,7 +52,7 @@ AuthenticatedComponent.propTypes = {
     const mapStateToProps = state => {
         return {
             isAuthenticated: state.loginUser.isAuthenticated,
-            token: state.loginUser.token
+            access: state.loginUser.access
         }
     }
 

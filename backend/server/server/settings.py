@@ -11,8 +11,12 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+# BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -22,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-)c7pc6#e7h&#po@b&m3adqp!w%(qw^2st=m-uvr_xt3i31*^r^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['0.0.0.0', 'factteller.zekariashirpo.com', 'www.factteller.zekariashirpo.com']
 
@@ -41,8 +45,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Installed packages
     'rest_framework',
-    'rest_framework.authtoken',
+    # 'rest_framework.authtoken',
     'djoser',
+    'rest_framework_simplejwt',
+    # 'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
     # Installed APPs
     'identity',
@@ -59,14 +65,22 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# Django Rest Framework configuration
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-    ),
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ]
+        'rest_framework.permissions.IsAuthenticated'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT',),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'AUTH_TOKEN_CLASSES': (
+        'rest_framework_simplejwt.tokens.AccessToken',
+    )
 }
 
 # Djoser Configuration
@@ -75,20 +89,30 @@ DJOSER = {
     "LOGIN_FIELD": "email",
     "SEND_ACTIVATION_EMAIL": True,
     "ACTIVATION_URL": "activate/{uid}/{token}",
-    # Allow user to login with unverified email#
+    "PASSWORD_RESET_CONFIRM_URL": "password/reset/confirm/{uid}/{token}",
+    "USERNAME_RESET_CONFIRM_URL": "password/reset/confirm/{uid}/{token}",
+    "USER_CREATE_PASSWORD_RETYPE": True,
+    "USERNAME_CHANGED_EMAIL_CONFIRMATION": True,
+    "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
+    "SEND_CONFIRMATION_EMAIL": True,
+    "SET_USERNAME_RETYPE": True,
+    "SET_PASSWORD_RETYPE": True,
+
     'SERIALIZERS': {
-        'token_create': 'identity.serializers.CustomTokenCreateSerializer',
+        'user_create': 'identity.serializers.UserCreateSerializer',
+        'user': 'identity.serializers.UserCreateSerializer',
+        'user_delete': 'djoser.serializers.UserDeleteSerializer',
     },
 }
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 SITE_NAME = "FactTeller"
 
 ROOT_URLCONF = 'server.urls'
 
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        # 'DIRS': [os.path.join(BASE_DIR, 'build')],
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -162,7 +186,13 @@ MEDIA_URL = '/media/'  # Url for serving files uploaded to Django application
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-JWT_AUTH = {
-    # Authorization:Token xxx
-    'JWT_AUTH_HEADER_PREFIX': 'Token',
-}
+# Default user authentication model
+AUTH_USER_MODEL = 'identity.UserAccount'
+
+# Gmail smpt setup
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'factteller.pilot@gmail.com'
+EMAIL_HOST_PASSWORD = 'lytcjdatofhahopk'
+EMAIL_USE_TLS = True
