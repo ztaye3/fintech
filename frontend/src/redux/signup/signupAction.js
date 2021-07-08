@@ -1,7 +1,6 @@
 import {CREATE_USER_SUBMIT, CREATE_USER_SUCCESS, CREATE_USER_ERROR} from "./signupType";
 import axios from "axios";
 import {toast} from "react-toastify";
-import {logger} from "redux-logger/src";
 import {SIGNUP_URL} from "../../utils/Constant";
 import {errorFilter} from "../../utils/Utils";
 import {push} from "connected-react-router";

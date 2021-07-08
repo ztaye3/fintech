@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-)c7pc6#e7h&#po@b&m3adqp!w%(qw^2st=m-uvr_xt3i31*^r^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', 'factteller.zekariashirpo.com', 'www.factteller.zekariashirpo.com']
+ALLOWED_HOSTS = ['0.0.0.0', 'klar.zekariashirpo.com', 'www.klar.zekariashirpo.com']
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
@@ -105,7 +105,7 @@ DJOSER = {
     },
 }
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-SITE_NAME = "FactTeller"
+SITE_NAME = "Klar"
 
 ROOT_URLCONF = 'server.urls'
 
@@ -193,6 +193,6 @@ AUTH_USER_MODEL = 'identity.UserAccount'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'factteller.pilot@gmail.com'
-EMAIL_HOST_PASSWORD = 'lytcjdatofhahopk'
+EMAIL_HOST_USER = 'klar.news.pilot@gmail.com'
+EMAIL_HOST_PASSWORD = 'xxnltvrlafctnmxx'
 EMAIL_USE_TLS = True
