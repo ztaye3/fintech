@@ -1,5 +1,7 @@
 import {makeStyles} from "@material-ui/core/styles";
 import React from "react";
+import Typography from "@material-ui/core/Typography";
+import Link from "@material-ui/core/Link";
 
 
 export const useStyles = makeStyles((theme) => ({
@@ -45,4 +47,15 @@ export const useStyles = makeStyles((theme) => ({
 }
 export default UpdatedComponent;
 
-
+export function Copyright() {
+          return (
+            <Typography variant="body2" color="textSecondary" align="center">
+              {"Copyright © "}
+              <Link color="inherit" href="https://klar.zekariashirpo.com/">
+                Klar Inc
+              </Link>{" "}
+              {new Date().getFullYear()}
+              {"."}
+            </Typography>
+          );
+        }

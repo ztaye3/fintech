@@ -27,6 +27,9 @@ export const signupAction = userInput => {
                   info: "User create successfully"
               })
 
+              // Store user email for account verification
+              localStorage.setItem("signupEmail", userInput.email);
+
               dispatch(push("/signup"))
 
           })

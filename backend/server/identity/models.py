@@ -1,5 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User, AbstractBaseUser, PermissionsMixin, BaseUserManager
+import os
+import sys
+from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
+
+
+# Image upload
+def upload_to(instance, filename):
+    now = timezone.now()
+    base, extension = os.path.splitext(filename.lower())
+    milliseconds = now.microsecond // 1000
+    return f"users/{instance.pk}/{now:%Y%m%d%H%M%S}{milliseconds}{extension}"
 
 
 # Customized user account manager
@@ -20,6 +32,7 @@ class UserAccountManager(BaseUserManager):
         user.is_admin = True
         user.is_reporter = False
         user.is_mediator = False
+        user.profile_picture = ''
 
         user.save(using=self._db)
         return user
@@ -36,6 +49,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     is_reporter = models.BooleanField(default=False)
     is_moderator = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
+    profile_picture = models.ImageField(upload_to=upload_to, blank=True, null=True, default="null")
 
     objects = UserAccountManager()
 

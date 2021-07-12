@@ -19,6 +19,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import UpdatedComponent from "../../utils/StyleUtil";
 import { FormControl} from "react-bootstrap";
+import {Copyright} from "../../utils/StyleUtil";
+import {ListItem} from "@material-ui/core";
+import List from "@material-ui/core/List";
 
 class Login extends Component {
     constructor(props) {
@@ -45,18 +48,13 @@ class Login extends Component {
     }
     render() {
         const classes = this.props.classes;
-        function Copyright() {
-          return (
-            <Typography variant="body2" color="textSecondary" align="center">
-              {"Copyright © "}
-              <Link color="inherit" href="https://klar.zekariashirpo.com/">
-                Your Website
-              </Link>{" "}
-              {new Date().getFullYear()}
-              {"."}
-            </Typography>
-          );
-        }
+        const flexContainer = {
+          display: 'flex',
+          flexDirection: 'row',
+          padding: 0,
+        };
+
+
         if (this.props.loginUser.isAuthenticated) {
         return <Redirect to='/dashboard' />
             }
@@ -95,11 +93,13 @@ class Login extends Component {
                             autoComplete="email"
                             onChange={this.onChange}
                             value={this.state.email}
-                            onInvalid={this.props.loginUser.emailError[0]}
+                            error={this.props.loginUser.emailError.toString()}
                             autoFocus
                           />
-                           <FormControl.Feedback type="invalid"/>
-                            {this.props.loginUser.emailError[0]}
+                            <Typography gutterBottom variant="h9" component="h5" color="error">
+                            {this.props.loginUser.emailError.toString()}
+                            </Typography>
+
                           <TextField
                             variant="outlined"
                             margin="normal"
@@ -112,11 +112,13 @@ class Login extends Component {
                             autoComplete="current-password"
                             onChange={this.onChange}
                             value={this.state.password}
-                            onInvalid={this.props.loginUser.passwordError[0]}
+                            error={this.props.loginUser.passwordError.toString()}
 
                           />
-                          <FormControl.Feedback type="invalid"/>
-                            {this.props.loginUser.passwordError[0]}
+                          <Typography gutterBottom variant="h9" component="h5" color="error">
+                            {this.props.loginUser.passwordError.toString()}
+                          </Typography>
+
                           <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
                             label="Remember me"
@@ -131,16 +133,34 @@ class Login extends Component {
                             Sign In
                           </Button>
                           <Grid container>
-                            <Grid item xs>
-                              <Link href="/reset-password" variant="body2">
-                                Forgot password?
-                              </Link>
-                            </Grid>
-                            <Grid item>
-                              <Link href="/signup" variant="body2">
-                                {"Don't have an account? Sign Up"}
-                              </Link>
-                            </Grid>
+
+                            <List style={flexContainer}>
+                                <ListItem>
+                                    <Grid item xs>
+                                      <Link href="/reset-password" variant="body2">
+                                          {"Forgot password?"}
+                                      </Link>
+                                    </Grid>
+                                </ListItem>
+
+                                <ListItem>
+                                    <Grid item>
+                                      <Link href="/signup" variant="body2">
+                                        {"Don't have an account? Sign Up"}
+                                      </Link>
+                                    </Grid>
+
+                                </ListItem>
+
+                                <ListItem>
+                                    <Grid item xs>
+                                      <Link href="/" variant="body2">
+                                          {"Go back?"}
+                                      </Link>
+                                    </Grid>
+                                </ListItem>
+                            </List>
+
                           </Grid>
                           <Box mt={5}>
                             <Copyright />

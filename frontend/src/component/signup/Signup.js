@@ -20,7 +20,9 @@ import PropTypes from "prop-types";
 import UpdatedComponent from "../../utils/StyleUtil";
 import { FormControl} from "react-bootstrap";
 import Container from "@material-ui/core/Container";
-
+import {Copyright} from "../../utils/StyleUtil";
+import List from "@material-ui/core/List";
+import {ListItem} from "@material-ui/core";
 
 
 class Signup extends Component{
@@ -33,8 +35,7 @@ class Signup extends Component{
             email : "",
             first_name : "",
             last_name : "",
-            is_moderator : false,
-            is_reporter : false,
+            passwordMismatch: ""
         }
     }
 
@@ -49,7 +50,6 @@ class Signup extends Component{
 
     onSignupClick = e => {
         e.preventDefault();
-        console.log(this.state)
        if(this.state.re_password === this.state.password){
             const userInput = {
             username: this.state.username,
@@ -58,28 +58,28 @@ class Signup extends Component{
             email : this.state.email,
             first_name : this.state.first_name,
             last_name : this.state.last_name,
-            is_moderator : this.state.is_moderator === "on",
-            is_reporter : this.state.is_reporter === "on",
+
         }
+
+        this.setState({passwordMismatch: "" })
         this.props.signupAction(userInput);
+
+       }
+       else {
+           this.setState({
+               passwordMismatch: "Password and Confirm password don't match"
+           })
        }
     }
 
     render() {
-        
+
+        const flexContainer = {
+          display: 'flex',
+          flexDirection: 'row',
+          padding: 0,
+        };
         const classes = this.props.classes;
-        function Copyright() {
-          return (
-            <Typography variant="body2" color="textSecondary" align="center">
-              {"Copyright © "}
-              <Link color="inherit" href="https://klar.zekariashirpo.com/">
-                Your Website
-              </Link>{" "}
-              {new Date().getFullYear()}
-              {"."}
-            </Typography>
-          );
-        }
         
         if (this.props.isAuthenticated) {
             return <Redirect to='/dashboard' />
@@ -159,12 +159,13 @@ class Signup extends Component{
                             autoComplete="username"
                             onChange={this.onChange}
                             value={this.state.username}
-                            onInvalid={this.props.signupUser.usernameError[0]}
+                            error={this.props.signupUser.usernameError.toString()}
                             autoFocus
                           />
+                          <Typography gutterBottom variant="h9" component="h5" color="error">
+                            {this.props.signupUser.usernameError.toString()}
+                          </Typography>
 
-                            <FormControl.Feedback type="invalid"/>
-                            {this.props.signupUser.usernameError[0]}
 
                             <TextField
                             variant="outlined"
@@ -178,7 +179,11 @@ class Signup extends Component{
                             onChange={this.onChange}
                             value={this.state.first_name}
                             autoFocus
+                            error={this.props.signupUser.first_nameError.toString()}
                           />
+                            <Typography gutterBottom variant="h9" component="h5" color="error">
+                            {this.props.signupUser.first_nameError.toString()}
+                            </Typography>
 
                             <TextField
                             variant="outlined"
@@ -193,6 +198,9 @@ class Signup extends Component{
                             value={this.state.last_name}
                             autoFocus
                           />
+                            <Typography gutterBottom variant="h9" component="h5" color="error">
+                            {this.props.signupUser.first_nameError.toString()}
+                            </Typography>
 
                           <TextField
                             variant="outlined"
@@ -205,11 +213,13 @@ class Signup extends Component{
                             autoComplete="email"
                             onChange={this.onChange}
                             value={this.state.email}
-                            onInvalid={this.props.signupUser.emailError[0]}
-                            onError={this.props.signupUser.emailError[0]}
+                            error={this.props.signupUser.emailError.toString()}
                             autoFocus
                           />
-                           <FormControl.Feedback type="invalid"/>
+                            <Typography gutterBottom variant="h9" component="h5" color="error">
+                            {this.props.signupUser.emailError.toString()}
+                            </Typography>
+
                           <TextField
                             variant="outlined"
                             margin="normal"
@@ -222,10 +232,13 @@ class Signup extends Component{
                             autoComplete="password"
                             onChange={this.onChange}
                             value={this.state.password}
-                            onInvalid={this.props.signupUser.passwordError[0]}
+                            error={this.props.signupUser.passwordError.toString()}
                           />
-                            <FormControl.Feedback type="invalid"/>
-                            {this.props.signupUser.passwordError[0]}
+                            <Typography gutterBottom variant="h9" component="h5" color="error">
+                            {this.props.signupUser.passwordError.toString()}
+                            </Typography>
+
+
                           <TextField
                             variant="outlined"
                             margin="normal"
@@ -238,30 +251,16 @@ class Signup extends Component{
                             autoComplete="re_password"
                             onChange={this.onChange}
                             value={this.state.re_password}
-                            onInvalid={this.props.signupUser.passwordError[0]}
+                            onInvalid={this.props.signupUser.re_passwordError.toString()}
                           />
+                           <Typography gutterBottom variant="h9" component="h5" color="error">
+                            {this.props.signupUser.re_passwordError.toString()}
+                           </Typography>
+                           <Typography gutterBottom variant="h9" component="h5" color="error">
+                            {this.state.passwordMismatch.toString()}
+                           </Typography>
 
-                            <FormControl.Feedback type="invalid"/>
-                            {this.props.signupUser.passwordError[0]}
 
-                            <FormControlLabel
-                            control={<Checkbox color="primary"
-                                        checked={this.state.is_reporter}
-                                        name="is_reporter"
-                                        onChange={this.onChange}
-                                        id="is_reporter"
-                            />}
-                            label="News Reporter"
-                          />
-                            <FormControlLabel
-                            control={<Checkbox color="primary"
-                                        checked={this.state.is_moderator}
-                                        name="is_moderator"
-                                        id="is_moderator"
-                                        onChange={this.onChange}
-                            />}
-                            label="News Moderator"
-                          />
                           <Button
                             fullWidth
                             variant="contained"
@@ -273,11 +272,24 @@ class Signup extends Component{
                           </Button>
                           <Grid container>
 
-                            <Grid item>
-                              <Link href="/login" variant="body2">
-                                {"Already have an account? Sign In"}
-                              </Link>
-                            </Grid>
+                            <List style={flexContainer}>
+                                <ListItem>
+                                    <Grid item xs>
+                                      <Link href="/login" variant="body2">
+                                        {"Already have an account? Sign In"}
+                                      </Link>
+                                    </Grid>
+                                </ListItem>
+
+                                <ListItem>
+                                    <Grid item xs>
+                                      <Link href="/" variant="body5">
+                                          {"Go back?"}
+                                      </Link>
+                                    </Grid>
+                                </ListItem>
+                            </List>
+
                           </Grid>
                           <Box mt={5}>
                             <Copyright />

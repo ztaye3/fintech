@@ -30,6 +30,7 @@ class ResetPasswordConfirm extends Component {
         this.state = {
             password: "",
             re_password: "",
+            passwordMismatch: ""
         }
     }
 
@@ -42,16 +43,30 @@ class ResetPasswordConfirm extends Component {
     onSubmit = e => {
         e.preventDefault();
 
-        const {uid, token} = this.props.match.params;
+        // Check if password and confirm password are equal
+        if(this.state.re_password === this.state.password){
 
-        const userInput = {
+            const {uid, token} = this.props.match.params;
+
+            const userInput = {
             'uid': uid,
             'token': token,
             'new_password': this.state.password,
             're_new_password': this.state.re_password
             }
 
-        this.props.resetPasswordConfirm(userInput);
+            this.setState({passwordMismatch: "" })
+
+            this.props.resetPasswordConfirm(userInput);
+
+       }
+       else {
+           this.setState({
+               passwordMismatch: "Password and Confirm password don't match"
+           })
+       }
+
+
     }
 
     render() {
@@ -123,6 +138,9 @@ class ResetPasswordConfirm extends Component {
 
                           />
 
+                          <Typography gutterBottom variant="h9" component="h5" color="error">
+                            {this.state.passwordMismatch.toString()}
+                          </Typography>
                           <Button
                             fullWidth
                             variant="contained"

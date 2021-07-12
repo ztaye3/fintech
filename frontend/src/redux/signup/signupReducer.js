@@ -4,7 +4,10 @@ const initialState = {
     usernameError: "",
     passwordError: "",
     isSubmitted: false,
-    emailError: ""
+    emailError: "",
+    re_passwordError: "",
+    first_nameError: "",
+    last_nameError: ""
 }
 
 // Signup reducer
@@ -16,7 +19,10 @@ const signupReducer = (state = initialState, action) =>{
                 usernameError: "",
                 passwordError: "",
                 isSubmitted: true,
-                emailError: ""
+                emailError: "",
+                re_passwordError: "",
+                first_nameError: "",
+                last_nameError: ""
             }
         case CREATE_USER_ERROR:
 
@@ -31,11 +37,25 @@ const signupReducer = (state = initialState, action) =>{
              if (action.errorData.hasOwnProperty("email")){
                 state.emailError = action.errorData["email"]
             }
+                        if (action.errorData.hasOwnProperty("re_password")){
+                state.re_passwordError = action.errorData["re_password"]
+            }
+
+             if (action.errorData.hasOwnProperty("first_name")){
+                state.first_nameError = action.errorData["first_name"]
+            }
+
+             if (action.errorData.hasOwnProperty("last_name")){
+                state.last_nameError = action.errorData["last_name"]
+            }
              return {
                  ...state,
                  usernameError: state.usernameError,
                  passwordError: state.passwordError,
                  emailError: state.emailError,
+                 re_passwordError: state.re_passwordError,
+                 first_nameError: state.first_nameError,
+                 last_nameError: state.last_nameError,
                  isSubmitted: false
             }
 
@@ -45,6 +65,9 @@ const signupReducer = (state = initialState, action) =>{
                 usernameError: "",
                 passwordError: "",
                 emailError: "",
+                re_passwordError: "",
+                first_nameError: "",
+                last_nameError: "",
                 isSubmitted: true
             }
         default:

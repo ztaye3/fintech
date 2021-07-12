@@ -14,3 +14,5 @@ export const VERIFY_TOKEN_URL = "/api/v1/jwt/verify/";
 export const REFRESH_TOKEN_URL = "/api/v1/jwt/";
 export const RESET_PASSWORD_URL = "/api/v1/users/reset_password/";
 export const RESET_PASSWORD_CONFIRM_URL = "/api/v1/users/reset_password_confirm/";
+export const ACTIVATE_USER_UPDATE_PROFILE_URL = "/api/v1/update-profile/";
+export const ACTIVATE_USER_REDIRECT_URL = "/activate/uid/token"

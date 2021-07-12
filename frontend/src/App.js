@@ -3,7 +3,7 @@ import AppBarAndDrawer from "./AppBarAndDrawer/AppBarAndDrawer";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { SignIn } from "./SignIn";
 import { Dashboard } from "./Dashboard/Dashboard";
-import { Home } from "./Home/Home";
+import { Home } from "./component/Home/Home";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { useTheme } from "./theme";
 import { DataProvider } from "./Providers/DataProvider";
@@ -15,13 +15,7 @@ import Components from "./Components/Components";
 import Settings from "./Settings/Settings";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import { configureStore } from "@reduxjs/toolkit";
-import peopleReducer from "./ReduxTable/peopleSlice";
-import { Provider } from "react-redux";
-
-// import Home from "./component/Home";
 import Signup from "./component/signup/Signup";
-// import Dashboard from "./component/dashboar/Dashboard";
 import Login from "./component/login/Login";
 import ResetPassword from "./component/login/ResetPassword";
 import ResetPasswordConfirm from "./component/login/ResetPasswordConfirm";
@@ -51,7 +45,6 @@ export default function App() {
             <DataProvider>
               <Root>
                 <div>
-
 
                   <Switch>
 
