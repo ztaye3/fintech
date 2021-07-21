@@ -44,7 +44,7 @@ class Login extends Component {
             password: this.state.password
         }
 
-        this.props.loginUserAction(userInput, DASHBOARD_URL)
+        this.props.loginUserAction(userInput, "/home")
     }
     render() {
         const classes = this.props.classes;
@@ -56,11 +56,12 @@ class Login extends Component {
 
 
         if (this.props.loginUser.isAuthenticated) {
-        return <Redirect to='/dashboard' />
+        return <Redirect to='/home' />
             }
         return (
 
             <Grid container component="main" className={classes.root}>
+                <div style={{ flexGrow: 0.8 }}/>
               <CssBaseline />
                   <Grid container justify="center" className={classes.image}>
                     <Grid

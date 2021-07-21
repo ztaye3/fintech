@@ -3,7 +3,7 @@ import AppBarAndDrawer from "./AppBarAndDrawer/AppBarAndDrawer";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { SignIn } from "./SignIn";
 import { Dashboard } from "./Dashboard/Dashboard";
-import { Home } from "./component/Home/Home";
+import { Landing } from "./component/Landing/Landing";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { useTheme } from "./theme";
 import { DataProvider } from "./Providers/DataProvider";
@@ -26,6 +26,8 @@ import authentication from "./utils/Authentication";
 import {BASE_BACKEND_URL, BASE_FRONTEND_URL} from "./utils/Constant";
 import Activate from "./component/signup/Activate";
 import Logout from "./component/logout/Logout";
+import Home from "./component/Home/Home"
+
 
 /* Check if server is running in development or production*/
 if (window.location.origin === BASE_FRONTEND_URL) {
@@ -48,6 +50,8 @@ export default function App() {
 
                   <Switch>
 
+                    <Route  exact path="/activate/:uid/:token" component={Activate}/>
+
                     <Route path="/login" component={Login}/>
 
                     <Route path="/signup" component={Signup}/>
@@ -56,10 +60,10 @@ export default function App() {
 
                     <Route exact path='/password/reset/confirm/:uid/:token' component={ResetPasswordConfirm} />
 
-                    <Route exact path="/activate/:uid/:token" component={Activate}/>
+
 
                     <Route exact strict path="/">
-                      <Home />
+                      <Landing />
                     </Route>
 
                     <AppBarAndDrawer
@@ -72,7 +76,9 @@ export default function App() {
                     <Route path="/profile">
                       <Driver id={1} />
                     </Route>
-                    <Route path="/dashboard" component={authentication(Dashboard)}/>
+                    {/*<Route path="/dashboard" component={authentication(Dashboard)}/>*/}
+                    <Route path="/dashboard" component={Dashboard}/>
+                    <Route path="/home" component={Home}/>
                     <Route exact path="/logout">
                       <Logout />
                     </Route>

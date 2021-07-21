@@ -2,6 +2,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import React from "react";
 import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
+import background from '../static/background/wallpaper2-min.PNG'
 
 
 export const useStyles = makeStyles((theme) => ({
@@ -9,7 +10,7 @@ export const useStyles = makeStyles((theme) => ({
     height: "100vh",
   },
   image: {
-    backgroundImage: "url(img/wallpaper2-min.PNG)",
+    backgroundImage: `url(${background})`,
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "dark"
@@ -25,6 +26,12 @@ export const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+  },
+  avatar2: {
+    border: `3px solid white`,
+    width: theme.spacing(13),
+    height: theme.spacing(13),
+    boxShadow: theme.shadows[3],
   },
   avatar: {
     margin: theme.spacing(1),

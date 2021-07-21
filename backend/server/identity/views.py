@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework.generics import ListAPIView
 from .models import UserAccount
 from .serializers import UpdateUserProfileSerializer
@@ -23,6 +22,7 @@ class UpdateUserProfile(ListAPIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 

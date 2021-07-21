@@ -82,7 +82,7 @@ class Signup extends Component{
         const classes = this.props.classes;
         
         if (this.props.isAuthenticated) {
-            return <Redirect to='/dashboard' />
+            return <Redirect to='/home' />
         }
         else if (this.props.signupUser.isSubmitted) {
             return (

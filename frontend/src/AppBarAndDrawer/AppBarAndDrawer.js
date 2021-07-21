@@ -10,6 +10,8 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import InputAdornment from '@material-ui/core/InputAdornment';
+import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import MenuIcon from "@material-ui/icons/Menu";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -20,7 +22,10 @@ import Avatar from "@material-ui/core/Avatar";
 import Badge from "@material-ui/core/Badge";
 import MailIcon from "@material-ui/icons/Mail";
 import PalettePicker from "../Theme/PalettePicker";
+import TextField from "@material-ui/core/TextField";
 export const drawerWidth = 240;
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,6 +35,8 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
     textDecoration: "none",
   },
+    shadows: ["none"]
+,
   drawer: {
     [theme.breakpoints.up("sm")]: {
       width: drawerWidth,
@@ -40,7 +47,10 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("sm")]: {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
-      backgroundColor: `#${theme.palette.primary[300].substring(1)}77`,
+      backgroundColor: theme.palette.action.selected,
+      shadow: "none"
+
+      // backgroundColor: `#${theme.palette.primary[300].substring(1)}77`,
     },
   },
   menuButton: {
@@ -60,6 +70,10 @@ const useStyles = makeStyles((theme) => ({
   active: {
     backgroundColor: theme.palette.action.selected,
   },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.primary.main,
+  },
 }));
 
 function ResponsiveDrawer(props) {
@@ -69,10 +83,16 @@ function ResponsiveDrawer(props) {
   const { pathname } = useLocation();
   const isHome = false; // pathname === "/";
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [selectedItem, setColor] = React.useState('home');
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  const handleMenuColor = (item) => {
+      setColor(item)
+      return 0;
+  }
 
   /* Modifying the source code from the template example to use the react router pathname hook to set
   selected prop and to use the react router component prop */
@@ -80,7 +100,7 @@ function ResponsiveDrawer(props) {
   const drawer = (
     <div>
       <div className={classes.toolbar} />
-      <Divider />
+      {/*<Divider />*/}
       <List>
         {[
           { text: "home", icon: "home" },
@@ -96,11 +116,11 @@ function ResponsiveDrawer(props) {
             component={RouterLink}
             selected={pathname === `/${text}`}
             to={`/${text}`}
-            button
+            button onClick={() => handleMenuColor(text)}
             key={text}
           >
             <ListItemIcon>
-              <Icon>{icon}</Icon>
+              <Icon color={selectedItem === text ? "secondary" : "black"}>{icon}</Icon>
             </ListItemIcon>
             <ListItemText primary={text.toUpperCase()} />
           </ListItem>
@@ -113,20 +133,20 @@ function ResponsiveDrawer(props) {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <div
-        style={{
-          height: "64px",
-          backgroundPosition: "center",
-          backgroundSize: "cover",
-          filter: "contrast(75%)",
-          backgroundImage: "url(/img/wallpaper.jpeg)",
-          position: "absolute",
-          top: "0px",
-          width: "100%",
-          zIndex: -2,
-        }}
-      />
-      <AppBar position="sticky" className={isHome ? "" : classes.appBar}>
+      {/*<div*/}
+      {/*  style={{*/}
+      {/*    height: "64px",*/}
+      {/*    backgroundPosition: "center",*/}
+      {/*    backgroundSize: "cover",*/}
+      {/*    filter: "contrast(75%)",*/}
+      {/*    backgroundImage: "url(/img/wallpaper.jpeg)",*/}
+      {/*    position: "absolute",*/}
+      {/*    top: "0px",*/}
+      {/*    width: "100%",*/}
+      {/*    zIndex: -2,*/}
+      {/*  }}*/}
+      {/*/>*/}
+      <AppBar position="sticky" className={isHome ? "" : classes.appBar} elevation={0}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -146,11 +166,37 @@ function ResponsiveDrawer(props) {
           >
             Klar
           </Typography>
-          <div style={{ flexGrow: 1 }}></div>
-          <PalettePicker
-            setCurrentTheme={setCurrentTheme}
-            currentTheme={currentTheme}
-          />
+          <div style={{ flexGrow: 0.8 }}/>
+          <Avatar
+                alt={"Profile picture"}
+                src='img/klar-logo-small.jpg'
+                classes={{ root: classes.avatar, circle: classes.circle }}
+                                  />
+          <TextField
+                            variant="outlined"
+                            id="search"
+                            name="search"
+                            autoComplete="search"
+                            placeholder={"Search klar..."}
+                            size="small"
+                            style={{backgroundColor: "white",
+                            borderRadius: "10%",
+                            }}
+                            InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <SearchOutlinedIcon/>
+                              </InputAdornment>
+                            ),
+                          }}
+                          />
+          <div style={{ flexGrow: 1 }}/>
+          {/*<PalettePicker*/}
+          {/*  setCurrentTheme={setCurrentTheme}*/}
+          {/*  currentTheme={currentTheme}*/}
+          {/*/>*/}
+
+
           <Badge badgeContent={4} color="primary">
             <MailIcon />
           </Badge>

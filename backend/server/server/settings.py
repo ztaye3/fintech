@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'corsheaders',
     # Installed APPs
     'identity',
+    'report'
 ]
 
 MIDDLEWARE = [
@@ -76,8 +77,8 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
     'AUTH_TOKEN_CLASSES': (
         'rest_framework_simplejwt.tokens.AccessToken',
     )
@@ -176,10 +177,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/django_static/'
-# Directory where static files from Django application will be stored after 'collectstatic' command
+ENV_PATH = Path(__file__).resolve().parent.parent
 STATIC_ROOT = BASE_DIR / 'django_static'
-MEDIA_URL = '/media/'  # Url for serving files uploaded to Django application
+STATIC_URL = '/django_static/'
+
+MEDIA_ROOT = BASE_DIR / 'media/'
+
+MEDIA_URL = '/media/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

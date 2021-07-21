@@ -75,8 +75,6 @@ const updateUserDate = (userInput) => dispatch => {
         formData.append("email", data.email);
         formData.append("profile_picture", data.profile_picture);
 
-        console.log("Update user", formData)
-
         axios.post(ACTIVATE_USER_UPDATE_PROFILE_URL, formData)
             .then(response => {
 

@@ -17,15 +17,19 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import UpdatedComponent from "../../utils/StyleUtil";
-import { FormControl} from "react-bootstrap";
 import Container from "@material-ui/core/Container";
 import {Copyright} from "../../utils/StyleUtil";
-import LinearProgress from '@material-ui/core/LinearProgress';
 import { ListItem, withStyles } from '@material-ui/core';
 import CardContent from "@material-ui/core/CardContent";
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';import Fab from "@material-ui/core/Fab";
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import Fab from "@material-ui/core/Fab";
 import CardMedia from "@material-ui/core/CardMedia";
 import List from "@material-ui/core/List";
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import {isEmptyUtils} from "../../utils/Utils";
 
 
 class Activate extends Component {
@@ -34,8 +38,7 @@ class Activate extends Component {
         super(props);
 
         this.state = {
-            is_moderator : false,
-            is_reporter : false,
+            account_type: null,
             profile_picture: null,
             profilePicturePreview: null,
 
@@ -61,11 +64,18 @@ class Activate extends Component {
     // Configure account
     configureAccount = e => {
 
-        const userInput = {
-                            is_moderator : this.state.is_moderator ,
-                            is_reporter : this.state.is_reporter,
+        if(!isEmptyUtils(this.state.account_type)){
+            const accountType = this.state.account_type;
+
+
+            const userInput = {
+                            is_moderator : accountType === "moderator" ,
+                            is_reporter : accountType === "reporter",
+                            }
+            this.props.activateAction(userInput, "configureAccount");
+
         }
-        this.props.activateAction(userInput, "configureAccount");
+
     }
 
     // Submit account choice and profile picture
@@ -172,34 +182,25 @@ class Activate extends Component {
                                     <LockOutlinedIcon />
                                     </Avatar>
                                     </Container>
-                                  <Typography
-                                      variant="h5"
-                                      color="textPrimary"
-                                      paragraph
-                                    >
-                                  Account Type
-                                </Typography>
 
                                   <form className={classes.form} noValidate>
-                                  <FormControlLabel
-                                    control={<Checkbox color="primary"
-                                                checked={this.state.is_reporter}
-                                                name="is_reporter"
-                                                id="is_reporter"
-                                                onChange={this.onChange}
-                                    />}
-                                    label="News Reporter"
-                                  />
-                                <br/>
-                            <FormControlLabel
-                                    control={<Checkbox color="primary"
-                                                checked={this.state.is_moderator}
-                                                name="is_moderator"
-                                                id="is_moderator"
-                                                onChange={this.onChange}
-                                    />}
-                                    label="News Moderator"
-                                  />
+
+                                 <FormControl component="fieldset" color={"secondary"}>
+                                      <FormLabel component="legend">
+                                          <Typography
+                                              variant="h5"
+                                              color="textPrimary"
+                                              paragraph
+                                            >
+                                          Account Type
+                                        </Typography>
+                                      </FormLabel>
+                                      <RadioGroup aria-label="account_type" name="account_type" value={this.state.account_type} onChange={this.onChange}>
+                                        <FormControlLabel value="moderator" control={<Radio />} label="News Moderator" />
+                                        <FormControlLabel value="reporter" control={<Radio />} label="News Reporter" />
+                                        <FormControlLabel value="normal" control={<Radio />} label="Normal User" />
+                                      </RadioGroup>
+                                 </FormControl>
                                       <br/><br/>
                                  <Container>
                                      <Button
@@ -289,10 +290,13 @@ class Activate extends Component {
                               <CardContent>
                                   <Grid container justify="center" alignItems="center">
                                     {this.state.profilePicturePreview && (
-
-                                  <div style={{paddingRight: '15px'}}>
-                                    <img  height="100px" width="130px"  style={{borderRadius: "45%"}} src={this.state.profilePicturePreview} alt="" />
-                                  </div>
+                                    <div style={{paddingRight: '2%'}}>
+                                     <Avatar
+                                    alt={"Profile picture"}
+                                    src={this.state.profilePicturePreview}
+                                    classes={{ root: classes.avatar2, circle: classes.circle }}
+                                  />
+                                    </div>
                                      )}
                                       <input
                                       accept="image/*"
@@ -315,7 +319,6 @@ class Activate extends Component {
                               <List style={flexContainer}>
                                   <ListItem>
                                       <Button
-                                        component={RouterLink}
                                         variant="contained"
                                         color="primary"
                                         onClick={this.configureState}
@@ -328,7 +331,6 @@ class Activate extends Component {
                                   <ListItem>
                                       <Button
                                         color="secondary"
-                                        component={RouterLink}
                                         variant="outlined"
                                         onClick= {this.skipAccountSetup}
                                         style={{ borderRadius: 25, width: 100, height: 32, borderColor: "green"
@@ -340,7 +342,6 @@ class Activate extends Component {
 
                                   <ListItem>
                                       <Button
-                                        component={RouterLink}
                                         variant="contained"
                                         color="primary"
                                         onClick= {this.submitAccountDetails}

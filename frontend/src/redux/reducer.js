@@ -4,6 +4,7 @@ import signupReducer from "./signup/signupReducer";
 import loginReducer from "./login/loginReducer";
 import activateReducer from "./signup/activateReducer";
 import peopleReducer from "../ReduxTable/peopleSlice";
+import reportReducer from "./report/reportReducer";
 
 
 // Synchronize state over history -> store-> router -> components
@@ -13,6 +14,7 @@ const createRootReducer = history =>
     signupUser: signupReducer,
     loginUser: loginReducer,
     activateUser: activateReducer,
+    report: reportReducer,
       people: peopleReducer,
   });
 

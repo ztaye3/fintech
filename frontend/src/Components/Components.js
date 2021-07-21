@@ -13,6 +13,7 @@ import Sliders from "./Slider/Slider";
 import Switches from "./Switches/Switches";
 import TextFields from "./TextField/TextField";
 import Breadcrumbs from "./Breadcrumbs/Breadcrumbs";
+import TextareaAutosize from "./TextareaAutosize/TextareaAutosize";
 
 const useStyles = makeStyles((theme) => ({
   root: {
